@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA9qFKc8ijpmDQ8iquPOPfruYWPasQytkY",
+            authDomain: "lab6task3-8fb9a.firebaseapp.com",
+            databaseURL: "https://lab6task3-8fb9a-default-rtdb.firebaseio.com",
+            projectId: "lab6task3-8fb9a",
+            storageBucket: "lab6task3-8fb9a.appspot.com",
+            messagingSenderId: "587603482491",
+            appId: "1:587603482491:web:e260712de3f99aef5f8fde"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase();
+
+        // Register functionality
+        document.getElementById('registerButton').addEventListener('click', () => {
+            const name = document.getElementById('registerName').value;
+            const phone = document.getElementById('registerPhone').value;
+            set(ref(db, 'users/' + name), {
+                name: name,
+                phone: phone
+            }).then(() => {
+                console.log('Registered successfully');
+                window.location.href = 'login.html';
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <h2>Register</h2>
+        <input type="text" id="registerName" placeholder="Name">
+        <input type="text" id="registerPhone" placeholder="Phone Number">
+        <button id="registerButton">Register</button>
+    </div>
+</body>
+</html>

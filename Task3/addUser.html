@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User</title>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+        import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyA9qFKc8ijpmDQ8iquPOPfruYWPasQytkY",
+            authDomain: "lab6task3-8fb9a.firebaseapp.com",
+            databaseURL: "https://lab6task3-8fb9a-default-rtdb.firebaseio.com",
+            projectId: "lab6task3-8fb9a",
+            storageBucket: "lab6task3-8fb9a.appspot.com",
+            messagingSenderId: "587603482491",
+            appId: "1:587603482491:web:e260712de3f99aef5f8fde"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(sessionStorage.getItem('user'));
+            if (!user) {
+                window.location.href = 'login.html';
+            }
+
+            document.getElementById('submitButton').addEventListener('click', () => {
+                const name = document.getElementById('name').value;
+                const address = document.getElementById('address').value;
+                const nophone = document.getElementById('nophone').value;
+
+                set(ref(db, 'users/' + name), {
+                    name: name,
+                    address: address,
+                    nophone: nophone
+                }).then(() => {
+                    console.log('Data saved successfully');
+                    fetchData();
+                }).catch((error) => {
+                    console.error(error);
+                });
+            });
+
+            fetchData();
+        });
+
+        function fetchData() {
+            const dbRef = ref(db);
+            get(child(dbRef, `users/`)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    const userTable = document.getElementById('userTable');
+                    userTable.innerHTML = ''; // Clear existing data
+                    for (const key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            const user = data[key];
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${user.name}</td>
+                                <td>${user.address || ''}</td>
+                                <td>${user.nophone}</td>
+                            `;
+                            userTable.appendChild(row);
+                        }
+                    }
+                } else {
+                    console.log("No data available");
+                }
+            }).catch((error) => {
+                console.error(error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <h2>Submit Data</h2>
+        <input type="text" id="name" placeholder="Name">
+        <input type="text" id="address" placeholder="Address">
+        <input type="text" id="nophone" placeholder="Phone Number">
+        <button id="submitButton">Submit</button>
+    </div>
+    <div>
+        <h2>User List</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Phone Number</th>
+                </tr>
+            </thead>
+            <tbody id="userTable">
+                <!-- User data will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

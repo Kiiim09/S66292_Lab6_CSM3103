@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+        import { getDatabase, ref, get, child } 
+        from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA9qFKc8ijpmDQ8iquPOPfruYWPasQytkY",
+            authDomain: "lab6task3-8fb9a.firebaseapp.com",
+            databaseURL: "https://lab6task3-8fb9a-default-rtdb.firebaseio.com",
+            projectId: "lab6task3-8fb9a",
+            storageBucket: "lab6task3-8fb9a.appspot.com",
+            messagingSenderId: "587603482491",
+            appId: "1:587603482491:web:e260712de3f99aef5f8fde"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase();
+
+        // Login functionality
+        document.getElementById('loginButton').addEventListener('click', () => {
+            const name = document.getElementById('loginName').value;
+            const phone = document.getElementById('loginPhone').value;
+
+            get(child(ref(db), `users/${name}`)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    if (userData.phone === phone) {
+                        console.log('Logged in:', userData);
+                        // Store the user data in session storage or local storage
+                        sessionStorage.setItem('user', JSON.stringify(userData));
+                        // Redirect to add user page
+                        window.location.href = 'addUser.html';
+                    } else {
+                        console.error('Phone number does not match');
+                    }
+                } else {
+                    console.error('No user found');
+                }
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <h2>Login</h2>
+        <input type="text" id="loginName" placeholder="Name">
+        <input type="text" id="loginPhone" placeholder="Phone Number">
+        <button id="loginButton">Login</button>
+    </div>
+</body>
+</html>

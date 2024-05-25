@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lab 6 - Task 1</title>
+    </head>
+    <body>
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+            import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-analytics.js";
+
+            const firebaseConfig = {
+              apiKey: "AIzaSyA_8ExYMygCFT-jnKf1oPlwYo43yIewkqo",
+              authDomain: "lab6-d5a39.firebaseapp.com",
+              databaseURL: "https://lab6-d5a39-default-rtdb.asia-southeast1.firebasedatabase.app",
+              projectId: "lab6-d5a39",
+              storageBucket: "lab6-d5a39.appspot.com",
+              messagingSenderId: "349421046628",
+              appId: "1:349421046628:web:7408e9804335ae5d2cc871",
+              measurementId: "G-83FB0WSLE3"
+            };
+          
+            const app = initializeApp(firebaseConfig);
+            const analytics = getAnalytics(app);
+          </script>
+    </body>
+</html>

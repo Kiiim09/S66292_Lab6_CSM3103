@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lab 6 - Task 2</title>
+    </head>
+    <body>
+
+        <h2>Simple Input</h2>
+
+        <div class="row">
+            <h4>Enter ID</h4><input type="text" id="inputID">
+            <h4>Enter Name</h4><input type="text" id="inputName">
+            <h4>Enter Age</h4><input type="number" id="inputAge">
+            <br><br>
+            <button id="btnInsert">Insert Data</button>
+        </div>
+        <script type="module">
+           // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+            // TODO: Add SDKs for Firebase products that you want to use
+            // https://firebase.google.com/docs/web/setup#available-libraries
+
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+                apiKey: "AIzaSyBifmpI3JRvfxwnxZagyAhE30aIlUryt-s",
+                authDomain: "lab6-task2-6dce1.firebaseapp.com",
+                databaseURL: "https://lab6-task2-6dce1-default-rtdb.asia-southeast1.firebasedatabase.app",
+                projectId: "lab6-task2-6dce1",
+                storageBucket: "lab6-task2-6dce1.appspot.com",
+                messagingSenderId: "366147364244",
+                appId: "1:366147364244:web:54f1d54aeb7393db589b81"
+            };
+
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+          
+            import {getDatabase, set, get, remove, update, ref, child}
+            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+            const db = getDatabase();
+
+            var inputID = document.querySelector("#inputID");
+            var inputName = document.querySelector("#inputName");
+            var inputAge = document.querySelector("#inputAge");
+          
+            var btnInsert = document.querySelector("#btnInsert");
+
+            btnInsert.addEventListener("click", funInsertData);
+
+            function funInsertData(){
+                set(ref(db,"people/" + inputID.value), {
+                    name: inputName.value,
+                    ID: inputID.value,
+                    age: inputAge.value
+                })
+                .then(()=>{
+                    alert("Data added Successfully!")
+                })
+                .catch((error)=>{
+                    alert(error)
+                });
+            }
+          </script>
+    </body>
+</html>
+
